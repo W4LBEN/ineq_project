@@ -29,7 +29,7 @@ silc.rph <- silc.rph %>% group_by(id_h) %>%
 
 # Equivalised household income per person
 silc.rph <- silc.rph %>%
-  mutate(inc_p1_2 = inc_p1_1 + (sum_inc_p2 / hx050))
+  mutate(inc_p1_2 = (inc_p1_1 + (sum_inc_p2 / hx050)))
 
 # 1.3 Post Tax Disposable Income------------------------------------------------
 

@@ -150,6 +150,7 @@ gini_p13_all <- svyby(~inc_p1_3, ~rb010, svy.p1,
                       svygini, keep.var = FALSE)
 gini_p13_all
 
+
 # 1.3.4 P80/P20-Ratio
 p80p20_p13 <- svyqsr(~inc_p1_3,svy.p1)
 p80p20_p13
@@ -331,4 +332,71 @@ topall_p23 <- svyby(~inc_p2_3, ~rb010, svy.p2, svytotal)
 
 top10_p23_all <- top0.1_p23 / topall_p23
 top10_p23_all
+
+
+## 3.0 Poverty Rate - At risk of poverty (60% of mean income)
+
+library(laeken)
+
+pr_p1_af <- arpr(silc.pos.p1$inc_p1_3, weights=silc.pos.p1$rb050, 
+           years=silc.pos.p1$rb010)
+pr_p1_af
+
+pr_p1_bef <- arpr(silc.pos.p1$inc_p1_1, weights=silc.pos.p1$rb050, 
+                 years=silc.pos.p1$rb010)
+pr_p1_bef
+
+
+#arop_test <-arpr(silc.rph$hy020, weights=silc.rph$rb050, 
+                 #years=silc.rph$rb010)
+
+#arop_test
+
+pr_p2 <- arpr(silc.pos.p2$inc_p2_3, weights=silc.pos.p2$rb050, 
+            years=silc.pos.p2$rb010)
+pr_p2
+
+# 3.1 Poverty Rate - include different ages 
+
+
+data_pr1 <- silc.pos.p1 %>% subset(age<18)
+data_pr2 <- silc.pos.p1 %>% subset(age >= 18 & age <= 64)
+data_pr3 <- silc.pos.p1 %>% subset(age>64)
+
+
+# after transfers 
+# 3.1.1 At risk of poverty rate: Ages 0-17 
+arpr_pr1 <- arpr(data_pr1$inc_p1_3, weights=data_pr1$rb050, 
+                 years=data_pr1$rb010)
+arpr_pr1
+
+# 3.1.2 At risk of poverty rate: Ages 18-64
+arpr_pr2 <- arpr(data_pr2$inc_p1_3, weights=data_pr2$rb050, 
+                 years=data_pr2$rb010)
+arpr_pr2
+
+# 3.1.3 At risk of poverty rate: Ages 65+
+arpr_pr3 <- arpr(data_pr3$inc_p1_3, weights=data_pr3$rb050, 
+                 years=data_pr3$rb010)
+arpr_pr3
+
+
+#before transfers
+# 3.2.1 At risk of poverty rate: Ages 0-17 
+arpr_pr1_bef <- arpr(data_pr1$inc_p1_1, weights=data_pr1$rb050, 
+                 years=data_pr1$rb010)
+arpr_pr1_bef
+
+# 3.2.2 At risk of poverty rate: Ages 18-64
+arpr_pr2_bef <- arpr(data_pr2$inc_p1_1, weights=data_pr2$rb050, 
+                 years=data_pr2$rb010)
+arpr_pr2_bef
+
+# 3.2.3 At risk of poverty rate: Ages 65+
+arpr_pr3_bef <- arpr(data_pr3$inc_p1_1, weights=data_pr3$rb050, 
+                 years=data_pr3$rb010)
+arpr_pr3_bef
+
+
+
 

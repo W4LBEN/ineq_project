@@ -27,8 +27,8 @@ if(!exists("pg")) {
 
 silc.p <- tbl(pg, "pp") %>%
   filter(pb020 == 'PT') %>%
-  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g, py100g, py110g,
-         py120g, py130g, py140g, px030) %>%
+  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g,
+         py100g, py110g, py120g, py130g, py140g, px030) %>%
   collect(n = Inf)
 
 silc.h <- tbl(pg, "hh") %>%
@@ -43,9 +43,10 @@ silc.r <- tbl(pg, "rr") %>%
   select(rb010, rb020, rb030, rb050, rb080, rb090, rx030) %>%
   collect(n = Inf)
 
+
 silc.d <- tbl(pg, "dd") %>%
   filter(db020 == 'PT') %>%
-  select(db010, db020, db030, db040, db090) %>%
+  dplyr:: select(db010, db020, db030, db040, db090) %>%
   collect(n = Inf)
 
 # 2.0 Company Car (PY021G)------------------------------------------------------
@@ -72,39 +73,61 @@ c12p <- tbl(pg, "c12p") %>% filter(pb020 == 'PT') %>%
 c13p <- tbl(pg, "c13p") %>% filter(pb020 == 'PT') %>% 
   select(pb010, pb030, py021g) %>% collect(n = Inf)
 
-# merge c07p - c13p to variable cxxp
-cxxp <- bind_rows(c07p, c08p, c09p, c10p, c11p, c12p, c13p)
+c14p <- tbl(pg, "c14p") %>% filter(pb020 == 'PT') %>% 
+  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g,
+          py100g, py110g, py120g, py130g, py140g, px030, py021g) %>% 
+  collect(n = Inf)
+
+c15p <- tbl(pg, "c15p") %>% filter(pb020 == 'PT') %>% 
+  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g,
+         py100g, py110g, py120g, py130g, py140g, px030, py021g) %>% 
+  collect(n = Inf)
+
+c16p <- tbl(pg, "c16p") %>% filter(pb020 == 'PT') %>% 
+  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g,
+         py100g, py110g, py120g, py130g, py140g, px030, py021g) %>% 
+  collect(n = Inf)
+
+c17p <- tbl(pg, "c17p") %>% filter(pb020 == 'PT') %>% 
+  select(pb010, pb020, pb030, py010g, py020g, py050g, py080g, py090g,
+         py100g, py110g, py120g, py130g, py140g, px030, py021g) %>% 
+  collect(n = Inf)
+
+
+# merge c07p - c17p to variable cxxp
+cxxp <- bind_rows(c07p, c08p, c09p, c10p, c11p, c12p, c13p, c14p, c15p,
+                  c16p, c17p)
 
 # now merge cxxp with silc.p 
-silc.p <- left_join(silc.p, cxxp %>% select(py021g, pb010, pb030))
+silc.p <- full_join(silc.p, cxxp) 
 
 
 # 3.0 Download Data for the years 2014 - 2017 
 # P-File
 
-silc.p14 <- tbl(pg, "c14p") %>%
-  filter(pb020 == 'PT') %>%
-  select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
-         py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
-  collect(n = Inf)
+#silc.p14 <- tbl(pg, "c14p") %>%
+ # filter(pb020 == 'PT') %>%
+  #select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
+   #      py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
+  #collect(n = Inf)
 
-silc.p15 <- tbl(pg, "c15p") %>%
-  filter(pb020 == 'PT') %>%
-  select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
-         py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
-  collect(n = Inf)
+#silc.p15 <- tbl(pg, "c15p") %>%
+ # filter(pb020 == 'PT') %>%
+  #select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
+   #      py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
+  #collect(n = Inf)
 
-silc.p16 <- tbl(pg, "c16p") %>%
-  filter(pb020 == 'PT') %>%
-  select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
-         py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
-  collect(n = Inf)
+#silc.p16 <- tbl(pg, "c16p") %>%
+ # filter(pb020 == 'PT') %>%
+  #select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
+   #      py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
+  #collect(n = Inf)
 
-silc.p17 <- tbl(pg, "c17p") %>%
-  filter(pb020 == 'PT') %>%
-  select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
-         py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
-  collect(n = Inf)
+#silc.p17 <- tbl(pg, "c17p") %>%
+ # filter(pb020 == 'PT') %>%
+  #select(pb010, pb020, pb030, py010g, py020g, py021g, py050g, py080g, 
+   #      py090g, py100g, py110g, py120g, py130g, py140g, px030) %>%
+  #collect(n = Inf)
 
 # H-File
 
@@ -136,6 +159,9 @@ silc.h17 <- tbl(pg, "c17h") %>%
          hy120g, hy130g, hy140g, hx040, hx050) %>%
   collect(n = Inf)
 
+cxxh <- bind_rows(silc.h14, silc.h15, silc.h16, silc.h17)
+silc.h <- full_join(silc.h, cxxh)
+
 # R-File
 
 silc.r14 <- tbl(pg, "c14r") %>%
@@ -160,54 +186,77 @@ silc.r17 <- tbl(pg, "c17r") %>%
   select(rb010, rb020, rb030, rb050, rb080, rb090, rx030) %>%
   collect(n = Inf)
 
+cxxr <- bind_rows(silc.r14, silc.r15, silc.r16, silc.r17)
+silc.r <- full_join(silc.r, cxxr)
+
 # D-File
 
 silc.d14 <- tbl(pg, "c14d") %>%  
   filter(db020 == 'PT') %>% 
-  select(db010, db020, db030, db040, db090) %>% 
+  dplyr::select(db010, db020, db030, db040, db090) %>% 
   collect(n = Inf)
 
 silc.d15 <- tbl(pg, "c15d") %>% 
   filter(db020 == 'PT') %>%
-  select(db010, db020, db030, db040, db090) %>% 
+  dplyr::select(db010, db020, db030, db040, db090) %>% 
   collect(n = Inf)
 
 silc.d16 <- tbl(pg, "c16d") %>% 
   filter(db020 == 'PT') %>%
-  select(db010, db020, db030, db040, db090) %>% 
+  dplyr::select(db010, db020, db030, db040, db090) %>% 
   collect(n = Inf)
 
 silc.d17 <- tbl(pg, "c16d") %>% 
   filter(db020 == 'PT') %>%
-  select(db010, db020, db030, db040, db090) %>% 
+  dplyr::select(db010, db020, db030, db040, db090) %>% 
   collect(n = Inf)
 
-# Merge Datasets ( - 2013) & (2014 - 2017)
-silc.p <- bind_rows(silc.p, silc.p14, silc.p15, silc.p16, silc.p17)
-silc.h <- bind_rows(silc.h, silc.h14, silc.h15, silc.h16, silc.h17)
-silc.r <- bind_rows(silc.r, silc.r14, silc.r15, silc.r16, silc.r17)
-silc.d <- bind_rows(silc.d, silc.d14, silc.d15, silc.d16, silc.d17)
+cxxd <- bind_rows(silc.d14, silc.d15, silc.d16, silc.d17)
+silc.d <- full_join(silc.d, cxxd)
 
-# 4.0 Merge and rename variables of dataset
-# 4.1 Rename rb030 & pb030 to id_p
-silc.r <- silc.r %>% rename(personal_id = rb030)
-silc.p <- silc.p %>% rename(personal_id = pb030)
 
-# 4.2 Merge silc.r with silc.p
+# Exclude observations with personal id = NA in p and r-file
+#silc.p <- silc.p %>% drop_na(pb030)
+#silc.r <- silc.r %>% drop_na(rb030)
+
+
+# generate car variable 
+silc.p$car <- silc.p$py020g
+silc.p$car <- ifelse(silc.p$pb010 > 2006, silc.p$py021g, silc.p$car)
+
+# 4.0 Merge and rename variables of dataset-------------------------------------
+
+# 4.1 Rename rb030, pb030 to id_p
+silc.r <- silc.r %>% rename(id_p = rb030)
+silc.p <- silc.p %>% rename(id_p = pb030)
+silc.d <- silc.d %>% rename(id_p = db030)
+
+# 4.2 merge silc.r and silc.p
 silc.rp <- left_join(silc.r, silc.p)
 
 # 4.3 Create age, household ID, gender variables
 silc.rp <- silc.rp %>% 
   mutate(age = rb010 - rb080,
          gender = factor(rb090, labels = c('Male','Female')),
-         id_h = paste0(rb020, rx030, rb010)) 
+         id_h = paste0(rb010, rx030)) 
 
-# 4.4 Create unique IDs for merging, merge country and household ID (h&d)
-silc.h <- silc.h %>% mutate(id_h = paste0(hb010, hb020, hb030))
-silc.d <- silc.d %>% mutate(id_h = paste0(db010, db020, db030))
+# 4.4 Create unique IDs for merging, merge country and household ID h & d
+silc.h <- silc.h %>% mutate(id_h = paste0(hb010, hb030))
 
-# 4.5 Merge silc.rp with silc.h
-silc.rph <- left_join(silc.rp, silc.h)
+#silc.d <- silc.d %>% mutate(id_h = paste0(db010, db030))
+
+# 4.5 Merge silc.rp and silc.h
+silc.rph <- full_join(silc.rp, silc.h, by = c("id_h", "rb010" = "hb010", 
+                                              "rx030" = "hb030"))
 
 # 4.6 Convert NA's in silc.rph to 0 for aggregation issues 
 silc.rph[is.na(silc.rph)] <- 0
+
+
+
+
+
+
+
+
+
